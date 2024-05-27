@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+    <title>Realtime OpenAI Assistant</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+</head>
+<body>
+    <h1>Realtime OpenAI Assistant</h1>
+    <input type="text" id="topic" placeholder="Set research topic" />
+    <button onclick="setTopic()">Set Topic</button>
+    <br><br>
+    <input type="text" id="message" placeholder="Ask a question" />
+    <button onclick="sendMessage()">Send</button>
+    <br><br>
+    <div id="responses"></div>
+
+    <script>
+        var socket = io();
+
+        function setTopic() {
+            var topic = document.getElementById('topic').value;
+            socket.emit('set_topic', { topic: topic });
+        }
+
+        function sendMessage() {
+            var message = document.getElementById('message').value;
+            socket.emit('message', { message: message });
+        }
+
+        socket.on('response', function(data) {
+            var responseDiv = document.getElementById('responses');
+            responseDiv.innerHTML += '<p>' + data.message + '</p>';
+        });
+    </script>
+</body>
+</html>
