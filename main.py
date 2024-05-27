@@ -6,6 +6,8 @@ from openai import OpenAI
 
 app = Flask(__name__)
 socketio = SocketIO(app)
+
+#Add your own API Key here
 client = OpenAI(api_key = '###')
 
 def get_openai_response(research_topic, user_input):
@@ -19,16 +21,13 @@ def get_openai_response(research_topic, user_input):
             temperature=0.7,
             max_tokens=150
         )
-        # Extracting the latest response from the assistant
         if response.choices:
             return response.choices[0].message.content
         else:
             return "No response generated."
     except Exception as e:
-        # Log the error or handle it appropriately
         print(f"An error occurred: {e}")
         return "Sorry, I couldn't fetch a response due to an error."
-
 
 
 @app.route('/')
